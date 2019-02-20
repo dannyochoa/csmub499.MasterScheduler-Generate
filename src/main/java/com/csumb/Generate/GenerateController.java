@@ -1,8 +1,8 @@
-package com.csumb.Generate.api;
+package com.csumb.Generate;
 
 import java.util.List;
 
-import com.csumb.Generate.api.entities.Student;
+import com.csumb.Generate.entities.Student;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
