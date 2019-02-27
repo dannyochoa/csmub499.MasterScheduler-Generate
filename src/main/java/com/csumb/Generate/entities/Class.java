@@ -9,18 +9,15 @@ import java.util.Objects;
 public class Class {
 
     @Id
-    protected String class_id;
-    protected String department;
-    protected String className;
-    protected String classRoom;
-    protected String teacherId;
+    private String class_id;
+    private String department;
+    private String className;
+    private String classRoom;
 
-    public Class(Class c){
-        this.class_id = c.getClass_id();
-        this.department = c.getDepartment();
-        this.className = c.getClassName();
-        this.classRoom = c.getClassRoom();
-        this.teacherId = c.getTeacherId();
+    public Class( ) {
+        this.department = "";
+        this.className = "";
+        this.classRoom = "";
     }
 
     public Class(String department, String className) {
@@ -28,18 +25,17 @@ public class Class {
         this.className = className;
     }
 
-    public Class(String id, String department, String className) {
-        this.class_id = id;
-        this.department = department;
-        this.className = className;
-    }
-
-    public Class(String class_id, String department, String className, String classRoom, String teacherId) {
-        this.class_id = class_id;
+    public Class(String department, String className, String classRoom) {
         this.department = department;
         this.className = className;
         this.classRoom = classRoom;
-        this.teacherId = teacherId;
+    }
+
+    public Class(Class c) {
+        this.class_id = c.getClass_id();
+        this.department = c.getDepartment();
+        this.className = c.getClassName();
+        this.classRoom = c.getClassRoom();
     }
 
     public String getDepartment() {
@@ -66,14 +62,6 @@ public class Class {
         this.classRoom = classRoom;
     }
 
-    public String getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
-    }
-
     public String getClass_id() {
         return class_id;
     }
@@ -89,7 +77,6 @@ public class Class {
                 ", department='" + department + '\'' +
                 ", className='" + className + '\'' +
                 ", classRoom='" + classRoom + '\'' +
-                ", teacherId='" + teacherId + '\'' +
                 '}';
     }
 
@@ -101,12 +88,11 @@ public class Class {
         return class_id.equals(aClass.class_id) &&
                 department.equals(aClass.department) &&
                 className.equals(aClass.className) &&
-                Objects.equals(classRoom, aClass.classRoom) &&
-                Objects.equals(teacherId, aClass.teacherId);
+                Objects.equals(classRoom, aClass.classRoom);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(class_id, department, className, classRoom, teacherId);
+        return Objects.hash(class_id, department, className, classRoom);
     }
 }

@@ -6,15 +6,36 @@ import java.util.List;
 import java.util.Objects;
 
 @Document
-public class Section extends Class{
+public class Section extends Class {
 
     private int section_num;
     private int period_num;
     private List<Student> students;
+    private String TeacherID;
 
-    public Section(Class c, int section_num){
+    public Section( ){
+
+    }
+
+    public Section(String department, String className, String classRoom, int section_num, int period_num, List<Student> students, String teacherID) {
+        super(department, className, classRoom);
+        this.section_num = section_num;
+        this.period_num = period_num;
+        this.students = students;
+        TeacherID = teacherID;
+    }
+
+    public Section(Class c, int section_num, int period_num, List<Student> students, String teacherID) {
         super(c);
-        this.class_id = this.class_id + "_" + section_num;
+        this.section_num = section_num;
+        this.period_num = period_num;
+        this.students = students;
+        TeacherID = teacherID;
+    }
+
+    public Section(Class c, int section_num) {
+        super(c);
+        this.setClass_id(this.getClass_id() + "_" + section_num);
         this.section_num = section_num;
     }
 
@@ -42,13 +63,21 @@ public class Section extends Class{
         this.students = students;
     }
 
+    public String getTeacherID() {
+        return TeacherID;
+    }
+
+    public void setTeacherID(String teacherID) {
+        TeacherID = teacherID;
+    }
+
     @Override
     public String toString() {
         return "Section{" +
-                "id='" + class_id + '\'' +
-                ", section_num=" + section_num +
-                ", perioud_num=" + period_num +
+                "section_num=" + section_num +
+                ", period_num=" + period_num +
                 ", students=" + students +
+                ", TeacherID='" + TeacherID + '\'' +
                 '}';
     }
 
@@ -60,11 +89,12 @@ public class Section extends Class{
         Section section = (Section) o;
         return section_num == section.section_num &&
                 period_num == section.period_num &&
-                Objects.equals(students, section.students);
+                Objects.equals(students, section.students) &&
+                Objects.equals(TeacherID, section.TeacherID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), section_num, period_num, students);
+        return Objects.hash(super.hashCode(), section_num, period_num, students, TeacherID);
     }
 }
