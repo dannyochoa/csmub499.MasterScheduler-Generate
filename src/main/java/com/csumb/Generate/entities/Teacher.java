@@ -3,6 +3,8 @@ package com.csumb.Generate.entities;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document
 public class Teacher {
 
@@ -49,5 +51,31 @@ public class Teacher {
 
     public void setPrep(int prep) {
         this.prep = prep;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Teacher teacher = (Teacher) o;
+        return prep == teacher.prep &&
+                id.equals(teacher.id) &&
+                name.equals(teacher.name) &&
+                department.equals(teacher.department);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, department, prep);
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", department='" + department + '\'' +
+                ", prep=" + prep +
+                '}';
     }
 }
