@@ -25,11 +25,12 @@ public class Class {
         this.className = className;
     }
 
-    public Class(String department, String className, String classRoom) {
+    public Class(String department, String className, String id) {
         this.department = department;
         this.className = className;
-        this.classRoom = classRoom;
+        this.class_id = id;
     }
+
 
     public Class(Class c) {
         this.class_id = c.getClass_id();
