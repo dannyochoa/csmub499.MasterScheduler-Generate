@@ -32,7 +32,7 @@ public class GenerateController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/generatesections")
-    public List<Section> updateStudents(){
+    public List<Section> generateSections(){
         List<Student> students = studentRepository.findAll();
         List<Class> classes = classRepository.findAll();
         //map students who want to take a class
@@ -41,19 +41,17 @@ public class GenerateController {
         List<Student> tempStudents;
 
         for (Class c: classes) {
-            if(!studentsToClasses.containsKey(c)) {
+            if (!studentsToClasses.containsKey(c)) {
                 studentsToClasses.put(c, new ArrayList<>());
             }
-            if(studentsToClasses.containsKey(c)){
-                tempStudents = studentsToClasses.get(c);
-                for (Student s: students) {
-                    for(Pair<Class, Boolean> student_c: s.getPreferred_classes()){
-                        if(student_c.getFirst()== c)
-                            tempStudents.add(s);
-                    }
-                }
-                studentsToClasses.remove(c);
-                studentsToClasses.put(c, tempStudents);
+        }
+        for (Student s: students) {
+            for (Pair<Class, Boolean> student_c : s.getPreferred_classes()) {
+                Class tempClass = student_c.getFirst();
+                tempStudents = studentsToClasses.get(tempClass);
+                tempStudents.add(s);
+                studentsToClasses.remove(tempClass);
+                studentsToClasses.put(tempClass, tempStudents);
             }
         }
 
@@ -62,8 +60,6 @@ public class GenerateController {
                     "num sections " + v.size()/30);
         });
 
-
         return null;
     }
-
 }

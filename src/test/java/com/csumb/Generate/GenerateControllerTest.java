@@ -88,10 +88,22 @@ public class GenerateControllerTest {
 
     @Test
     public void updateStudents() {
+        System.out.printf("update student test\n\n");
         setStudentData();
         when(studentRepository.findAll()).thenReturn(studentData);
         when(classRepository.findAll()).thenReturn(classData);
         generateController.updateStudents();
+    }
+
+    @Test
+    public void generateSections(){
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n");
+        setStudentData();
+        System.out.println(studentData);
+        System.out.println(classData);
+        when(studentRepository.findAll()).thenReturn(studentData);
+        when(classRepository.findAll()).thenReturn(classData);
+        generateController.generateSections();
     }
 
 }
