@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - GenerateApplication",
+            "request": "launch",
+            "mainClass": "com.csumb.Generate.GenerateApplication",
+            "projectName": "Generate"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - GenerateControllerTest",
+            "request": "launch",
+            "mainClass": "com.csumb.Generate.GenerateControllerTest",
+            "projectName": "Generate"
+        }
+    ]
+}
