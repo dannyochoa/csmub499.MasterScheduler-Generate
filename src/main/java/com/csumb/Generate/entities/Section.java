@@ -39,6 +39,14 @@ public class Section extends Class {
         this.section_num = section_num;
     }
 
+    public Section(Class c, int section_num, List<Student> students) {
+        super(c);
+        this.setClass_id(this.getClass_id() + "_" + section_num);
+        this.section_num = section_num;
+        this.students = students;
+    }
+
+
     public int getSection_num() {
         return section_num;
     }
