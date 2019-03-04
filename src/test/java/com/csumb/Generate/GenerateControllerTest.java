@@ -93,5 +93,4 @@ public class GenerateControllerTest {
         when(classRepository.findAll()).thenReturn(classData);
         generateController.updateStudents();
     }
-
 }

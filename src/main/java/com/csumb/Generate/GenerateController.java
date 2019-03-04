@@ -60,9 +60,49 @@ public class GenerateController {
         studentsToClasses.forEach((k,v) -> {
             System.out.println(k.getClassName() + " num student want to take " + v.size() +
                     "num sections " + v.size()/30);
+            //setSections(k, v);
         });
 
 
+        return null;
+    }
+
+    public List<Section> setSections(Class c, List<Student> students){
+        List<Student> tempstudent = new ArrayList<>();
+        List<Section> allSections = new ArrayList<>();
+        int section_num = 1;
+
+        while(!students.isEmpty()){
+
+            //if there are 30 students or less students then create new section right away
+            // What is the max number of students in a class?
+            // dismiss the ones that do not fit into groups of 30?
+            //minimum number of students in a class? 
+            //check inititially if there is well divided groups _> increase number of students for each section?
+            if(students.size() <= 30 ){
+                tempstudent.addAll(students);
+                //if left over students then ask user if wanting to creat new section
+                
+            }else {
+                //divide students into groups of 30
+                for(int i =0; i < 30; i++){
+                    tempstudent.add(students.get(i));
+                    students.remove(i);
+                }
+            }
+            
+            //set class, section number and group of students
+            allSections.add(new Section(c,section_num,tempstudent));
+            section_num++;
+        }
+
+        for(Section s: allSections){
+            System.out.println("Class:" + s.getClassName() + "  Students: ");
+            for(Student student: s.getStudents()){
+                System.out.println(student.getId() + " " + student.getName());
+            }
+        }
+        
         return null;
     }
 
