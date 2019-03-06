@@ -14,7 +14,7 @@ public class Class {
     private String className;
     private String classRoom;
 
-    public Class( ) {
+    public Class() {
         this.department = "";
         this.className = "";
         this.classRoom = "";
@@ -89,7 +89,7 @@ public class Class {
         return class_id.equals(aClass.class_id) &&
                 department.equals(aClass.department) &&
                 className.equals(aClass.className) &&
-                Objects.equals(classRoom, aClass.classRoom);
+                classRoom.equals(aClass.classRoom);
     }
 
     @Override

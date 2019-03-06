@@ -73,7 +73,7 @@ public class GenerateControllerTest {
     }
 
     private void setStudentData(){
-        for(int i =0; i < 3000; i++){
+        for(int i =0; i < 100; i++){
             Student temp = new Student("123" + i, "student_" + i,10 );
             ArrayList<Pair<Class,Boolean>> tempClasses = new ArrayList<>();
             tempClasses.addAll(Arrays.asList(Pair.of(english9,false), Pair.of(pe,false), Pair.of(algebra, false)));
@@ -85,12 +85,12 @@ public class GenerateControllerTest {
         }
     }
 
-
     @Test
-    public void updateStudents() {
+    public void generateSections(){
         setStudentData();
         when(studentRepository.findAll()).thenReturn(studentData);
         when(classRepository.findAll()).thenReturn(classData);
-        generateController.updateStudents();
+        generateController.generateSections();
     }
+
 }
