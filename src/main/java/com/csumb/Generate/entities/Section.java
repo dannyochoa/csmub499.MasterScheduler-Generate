@@ -11,7 +11,7 @@ public class Section extends Class {
     private int section_num;
     private int period_num;
     private List<Student> students;
-    private String TeacherID;
+    private String teacherID;
 
     public Section( ){
 
@@ -22,7 +22,7 @@ public class Section extends Class {
         this.section_num = section_num;
         this.period_num = period_num;
         this.students = students;
-        TeacherID = teacherID;
+        teacherID = teacherID;
     }
 
     public Section(Class c, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -30,13 +30,14 @@ public class Section extends Class {
         this.section_num = section_num;
         this.period_num = period_num;
         this.students = students;
-        TeacherID = teacherID;
+        teacherID = teacherID;
     }
 
     public Section(Class c, int section_num) {
         super(c);
         this.setClass_id(this.getClass_id() + "_" + section_num);
         this.section_num = section_num;
+        this.teacherID = "";
     }
 
     public Section(Class c, int section_num, List<Student> students) {
@@ -71,12 +72,16 @@ public class Section extends Class {
         this.students = students;
     }
 
+    public void addStudent(Student student) {
+        this.students.add(student);
+    }
+
     public String getTeacherID() {
-        return TeacherID;
+        return teacherID;
     }
 
     public void setTeacherID(String teacherID) {
-        TeacherID = teacherID;
+        teacherID = teacherID;
     }
 
     @Override
@@ -85,7 +90,7 @@ public class Section extends Class {
                 "section_num=" + section_num +
                 ", period_num=" + period_num +
                 ", students=" + students +
-                ", TeacherID='" + TeacherID + '\'' +
+                ", teacherID='" + teacherID + '\'' +
                 '}';
     }
 
@@ -98,11 +103,11 @@ public class Section extends Class {
         return section_num == section.section_num &&
                 period_num == section.period_num &&
                 Objects.equals(students, section.students) &&
-                Objects.equals(TeacherID, section.TeacherID);
+                Objects.equals(teacherID, section.teacherID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), section_num, period_num, students, TeacherID);
+        return Objects.hash(super.hashCode(), section_num, period_num, students, teacherID);
     }
 }
