@@ -108,9 +108,14 @@ public class GenerateController {
         return sections;
     }
 
+    @GetMapping("/teachersByClassName/{className}")
+    public List<Teacher> findByClassName(@PathVariable String className){
+        return teacherRepository.findAllByClassName(className);
+    }
+
     public List<Section> setTeacherToSections(List<Section> sections){
-        String department = sections.get(0).getDepartment();
-        List<Teacher> teachers = teacherRepository.findAllByDepartment(department);
+        String className = sections.get(0).getClassName();
+        List<Teacher> teachers = teacherRepository.findAllByClassName(className);
         int teacherIndex = 0;
         int i =0;
         while(i < sections.size()) {

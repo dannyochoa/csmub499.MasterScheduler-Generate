@@ -99,19 +99,16 @@ public class GenerateControllerTest {
         Assert.assertEquals(sectionData,response);
     }
 
-
     @Test
     public void setStudentToSections(){
         setStudentData();
         setSections();
-        List<Section> sectionCopy = sectionData;
-        List<Section> response = generateController.setStudentToSections(studentData,sectionCopy);
-//        sectionData.get(0).setStudents(studentData.subList(0, 29));
-//        sectionData.get(1).setStudents(studentData.subList(30, 59));
+        List<Section> response = generateController.setStudentToSections(studentData,sectionData);
+        Assert.assertEquals(sectionData,response);
+    }
 
-        System.out.println(sectionData);
-        System.out.println(response);
-       Assert.assertEquals(sectionData,response);
+    @Test
+    public void setTeacherToSections(){
 
     }
 }

@@ -21,7 +21,7 @@ public class Teacher {
     private String academy; // Re named this for to be more specific
     private int maxNumStudent;
     private int currentNumStudent;
-    private List<Section> classes;
+    private List<Section> sections;
     private String className;
 
     public Teacher( ) {
@@ -33,7 +33,7 @@ public class Teacher {
         this.academy = "";
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
-        this.classes = new ArrayList<>();
+        this.sections = new ArrayList<>();
         this.className = "";
     }
 
@@ -47,7 +47,7 @@ public class Teacher {
         this.maxNumStudent = maxNumStudent;
         this.currentNumStudent = 0;
         this.className = className;
-        this.classes = new ArrayList<>();
+        this.sections = new ArrayList<>();
     }
 
     public Teacher(String id, String name, String department) {
@@ -56,7 +56,7 @@ public class Teacher {
         this.department = department;
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
-        this.classes = new ArrayList<>();
+        this.sections = new ArrayList<>();
     }
 
     public Teacher(String id, String name, String department, String className) {
@@ -66,7 +66,7 @@ public class Teacher {
         this.className = className;
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
-        this.classes = new ArrayList<>();
+        this.sections = new ArrayList<>();
     }
 
     public String getId() {
@@ -141,16 +141,16 @@ public class Teacher {
         this.currentNumStudent = currentNumStudent;
     }
 
-    public List<Section> getClasses() {
-        return classes;
+    public List<Section> getSections() {
+        return sections;
     }
 
-    public void setClasses(List<Section> classes) {
-        this.classes = classes;
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 
     public void addClass(Section section){
-        this.classes.add(section);
+        this.sections.add(section);
     }
 
     public String getClassName() {
@@ -173,7 +173,7 @@ public class Teacher {
                 ", academy='" + academy + '\'' +
                 ", maxNumStudent=" + maxNumStudent +
                 ", currentNumStudent=" + currentNumStudent +
-                ", classes=" + classes +
+                ", sections=" + sections +
                 '}';
     }
 
@@ -191,11 +191,11 @@ public class Teacher {
                 department.equals(teacher.department) &&
                 Objects.equals(preferred_room, teacher.preferred_room) &&
                 academy.equals(teacher.academy) &&
-                Objects.equals(classes, teacher.classes);
+                Objects.equals(sections, teacher.sections);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, department, prep, preferred_room, is80Percent, academy, maxNumStudent, currentNumStudent, classes);
+        return Objects.hash(id, name, department, prep, preferred_room, is80Percent, academy, maxNumStudent, currentNumStudent, sections);
     }
 }
