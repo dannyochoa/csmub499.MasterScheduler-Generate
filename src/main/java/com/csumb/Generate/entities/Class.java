@@ -23,12 +23,14 @@ public class Class {
     public Class(String department, String className) {
         this.department = department;
         this.className = className;
+        this.classRoom = "";
     }
 
     public Class(String department, String className, String id) {
         this.department = department;
         this.className = className;
         this.class_id = id;
+        this.classRoom = "";
     }
 
 

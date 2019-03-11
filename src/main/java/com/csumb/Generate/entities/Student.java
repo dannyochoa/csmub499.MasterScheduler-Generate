@@ -36,6 +36,7 @@ public class Student {
         this.id = id;
         this.name = name;
         this.grade = grade;
+        this.academy = "";
     }
 
     public String getId() {

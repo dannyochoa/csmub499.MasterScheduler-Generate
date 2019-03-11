@@ -3,6 +3,7 @@ package com.csumb.Generate;
 import com.csumb.Generate.entities.Class;
 import com.csumb.Generate.entities.Section;
 import com.csumb.Generate.entities.Student;
+import com.csumb.Generate.entities.Teacher;
 import com.csumb.Generate.repositotries.IClassRepository;
 import com.csumb.Generate.repositotries.ISectionRepository;
 import com.csumb.Generate.repositotries.IStudentRepository;
@@ -30,14 +31,10 @@ public class GenerateController {
     @Autowired
     private ISectionRepository sectionRepository;
 
-    @CrossOrigin(origins = "*")
-    @GetMapping("/generatesections")
-    public List<Section> generateSections(){
+    public Map<Class,List<Student>> mapStudentToClasses(){
+        Map<Class,List<Student>> studentsToClasses = new HashMap<>();
         List<Student> students = studentRepository.findAll();
         List<Class> classes = classRepository.findAll();
-        //map students who want to take a class
-        Map<Class,List<Student>> studentsToClasses = new HashMap<>();
-
         List<Student> tempStudents;
 
         for (Class c: classes) {
@@ -45,6 +42,7 @@ public class GenerateController {
                 studentsToClasses.put(c, new ArrayList<>());
             }
         }
+
         for (Student s: students) {
             for (Pair<Class, Boolean> student_c : s.getPreferred_classes()) {
                 Class tempClass = student_c.getFirst();
@@ -54,65 +52,86 @@ public class GenerateController {
                 studentsToClasses.put(tempClass, tempStudents);
             }
         }
+        return studentsToClasses;
+    }
 
-        studentsToClasses.forEach((k,v) -> {
-            System.out.println(k.getClassName() + " num student want to take " + v.size() +
-                    "num sections " + v.size()/30);
-            //
-            //
-            setSections(k, v);
+    public void createSectionsForClasses(Map<Class,List<Student>> studentsToClasses){
+        studentsToClasses.forEach((c,s) -> {
+            List<Section> sections;
+            sections = createSections(c,s.size());
+            sections = setStudentToSections(s,sections);
+            sections = setTeacherToSections(sections);
         });
-
-        return null;
     }
 
-
-    public List<Section> setSections(Class c, List<Student> students){
-        List<Student> tempStudent;
+    public List<Section> createSections(Class c,int numStudents){
         List<Section> allSections = new ArrayList<>();
-        int section_num = students.size()/30;
-        int j = 0;
+        int section_num = numStudents/30;
         for(int i = 1; i<= section_num; i++){
-            //set class, section number and group of students
-            tempStudent = students.subList(j,j+30);
-            allSections.add(new Section(c,i,tempStudent));
-            j+=30;
+            allSections.add(new Section(c,i));
         }
-
-        for(Section s: allSections) {
-            System.out.println("Class:" + s.getClassName() + "  Section num: " + s.getSection_num()
-                    + " num s: " + s.getStudents().size());
-        }
-        return null;
+        System.out.println(section_num);
+        return allSections;
     }
 
-    public List<Section> setSections2(Class c, List<Student> students){
-        List<Student> tempStudent;
-        List<Section> allSections = new ArrayList<>();
-        List<List<Section>> teacherSchedule = new ArrayList<>(new ArrayList<>());
-        int section_num = students.size()/30;
-        int techersNeeded = students.size()/160;
-        int j = 0;
+    public List<Section> setStudentToSections(List<Student> students, List<Section> sections){
+        //separate students
+        List<Student> fastStudents =  new ArrayList<>();
+        List<Student> greenStudents =  new ArrayList<>();
 
-        for(int i = 1; i<= section_num; i++){
-            //set class, section number and group of students
-            tempStudent = students.subList(j,j+30);
-            allSections.add(new Section(c,i,tempStudent));
-            j+=30;
+        for(int i =0; i < students.size();i++){
+            if(students.get(i).getAcademy() == "fast"){
+                fastStudents.add(students.get(i));
+                students.remove(i);
+            }
+            if(students.get(i).getAcademy() == "green"){
+                greenStudents.add(students.get(i));
+                students.remove(i);
+            }
         }
 
-        //separate teachers to sections
-        teacherRepository.findAll();
-
-        for (){
-
+        int sectionIndex = 0;
+        if(!fastStudents.isEmpty()) {
+            sections.get(sectionIndex).setStudents(fastStudents);
+            sectionIndex++;
+        }
+        if(!greenStudents.isEmpty()) {
+            sections.get(sectionIndex).setStudents(greenStudents);
+            sectionIndex++;
         }
 
-        for(Section s: allSections) {
-            System.out.println("Class:" + s.getClassName() + "  Section num: " + s.getSection_num()
-                    + " num s: " + s.getStudents().size());
+        int studentIndex = 0;
+        for(int i = sectionIndex; i < sections.size(); i++){
+            sections.get(i).setStudents(students.subList(studentIndex, studentIndex + 30));
+            studentIndex+=30;
         }
+        return sections;
+    }
 
-        return null;
+    @GetMapping("/teachersByClassName/{className}")
+    public List<Teacher> findByClassName(@PathVariable String className){
+        return teacherRepository.findAllByClassName(className);
+    }
+
+    public List<Section> setTeacherToSections(List<Section> sections){
+        String className = sections.get(0).getClassName();
+        List<Teacher> teachers = teacherRepository.findAllByClassName(className);
+        int teacherIndex = 0;
+        int i =0;
+        while(i < sections.size()) {
+            Section s = sections.get(i);
+            if(s.getTeacherID() == ""){
+                if(teachers.get(teacherIndex).getCurrentNumStudent() + s.getStudents().size() <
+                        teachers.get(teacherIndex).getMaxNumStudent()) {
+                    s.setTeacherID(teachers.get(teacherIndex).getId());
+                    teachers.get(teacherIndex).addClass(s);
+                    i++;
+                } else{
+                  teacherIndex++;
+                }
+            }
+        }
+        teacherRepository.saveAll(teachers);
+        return sections;
     }
 }
