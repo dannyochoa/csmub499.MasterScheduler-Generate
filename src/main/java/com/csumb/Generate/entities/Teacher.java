@@ -73,6 +73,10 @@ public class Teacher {
         return id;
     }
 
+    public void updateCurrentNumStudents(int num){
+        this.currentNumStudent += num;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

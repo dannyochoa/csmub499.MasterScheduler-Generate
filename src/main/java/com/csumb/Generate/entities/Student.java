@@ -79,6 +79,16 @@ public class Student {
         this.academy = academy;
     }
 
+    public boolean isClassPreferred(String className){
+        for(int i =0; i < preferred_classes.size(); i++){
+            if(preferred_classes.get(i).getFirst().getClassName().equals(className)){
+                System.out.println(preferred_classes.get(i).getFirst().getClassName() + " == " + className);
+                return preferred_classes.get(i).getSecond();
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
