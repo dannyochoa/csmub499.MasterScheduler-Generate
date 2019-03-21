@@ -22,7 +22,7 @@ public class Section extends Class {
         this.section_num = section_num;
         this.period_num = period_num;
         this.students = students;
-        teacherID = teacherID;
+        this.teacherID = teacherID;
     }
 
     public Section(Class c, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -30,19 +30,19 @@ public class Section extends Class {
         this.section_num = section_num;
         this.period_num = period_num;
         this.students = students;
-        teacherID = teacherID;
+        this.teacherID = teacherID;
     }
 
     public Section(Class c, int section_num) {
         super(c);
-        this.setClass_id(this.getClass_id() + "_" + section_num);
+        this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.teacherID = "";
     }
 
     public Section(Class c, int section_num, List<Student> students) {
         super(c);
-        this.setClass_id(this.getClass_id() + "_" + section_num);
+        this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.students = students;
     }
