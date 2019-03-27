@@ -17,12 +17,14 @@ public class Student {
     private int grade;
     private List<Pair<Class, Boolean>> preferred_classes;
     private String academy;
+    private List<Section> schedule;
 
     public Student() {
         this.name ="";
         this.grade = 0;
         this.preferred_classes = new ArrayList<>();
         this.academy = "";
+        this.schedule = new ArrayList<>(6);
     }
 
     public Student(String id, String name, int grade, String academy) {
@@ -30,6 +32,8 @@ public class Student {
         this.name = name;
         this.grade = grade;
         this.academy = academy;
+        this.preferred_classes = new ArrayList<>();
+        this.schedule = new ArrayList<>(6);
     }
 
     public Student(String id, String name, int grade) {
@@ -37,6 +41,8 @@ public class Student {
         this.name = name;
         this.grade = grade;
         this.academy = "";
+        this.preferred_classes = new ArrayList<>();
+        this.schedule = new ArrayList<>(6);
     }
 
     public String getId() {
@@ -77,6 +83,32 @@ public class Student {
 
     public void setAcademy(String academy) {
         this.academy = academy;
+    }
+
+    public boolean isClassPreferred(String className){
+        for(int i =0; i < preferred_classes.size(); i++){
+            if(preferred_classes.get(i).getFirst().getClassName().equals(className)){
+                return preferred_classes.get(i).getSecond();
+            }
+        }
+        return false;
+    }
+
+    public List<Section> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(List<Section> schedule) {
+        this.schedule = schedule;
+    }
+
+    public void setPeriod(int time, Section section){
+        schedule.set(time,section);
+    }
+
+    public boolean isPeriodAvilable(int time){
+        System.out.println(schedule.get(time).getClass_id());
+        return schedule.get(time).getClass_id().isEmpty();
     }
 
     @Override
