@@ -49,9 +49,10 @@ public class GenerateControllerTest {
     private Class bio = new Class("Science", "Biology","5");
     private List<Class> classData = Arrays.asList(history, bio, pe,algebra, english9);
 
-    private List<Student> studentData = new ArrayList<>();
-    private List<Section> sectionData = new ArrayList<>();
     private List<Teacher> teacherData = Arrays.asList(new Teacher("123","Judith","Social Science","History"));
+
+    private List<Section> sectionData = new ArrayList<>();
+    private List<Student> studentData = new ArrayList<>();
 
     private void setStudentData(){
         List<Pair<Class, Boolean>> classes = new ArrayList<>();
@@ -59,9 +60,9 @@ public class GenerateControllerTest {
             classes.add(Pair.of(classData.get(i),false));
         }
 
-        List<Pair<Class, Boolean>> priotityClasses = new ArrayList<>();
+        List<Pair<Class, Boolean>> priorityClasses = new ArrayList<>();
         for(int k=0; k < classData.size();k++){
-            priotityClasses.add(Pair.of(classData.get(k),true));
+            priorityClasses.add(Pair.of(classData.get(k),true));
         }
         for(int i=0; i < 210;i++){
             Student studentToAdd = new Student("123_"+i, "student_"+i,9);
@@ -71,7 +72,7 @@ public class GenerateControllerTest {
             if(i < 60 && i >= 30)
                 studentToAdd.setAcademy("green");
             if(i == 105  || i == 106 || i == 107){
-                studentToAdd.setPreferred_classes(priotityClasses);
+                studentToAdd.setPreferred_classes(priorityClasses);
             }
             studentData.add(studentToAdd);
         }
@@ -119,5 +120,16 @@ public class GenerateControllerTest {
         when(teacherRepository.findAllByClassName(sectionData.get(0).getClassName())).thenReturn(teacherData);
         List<Section> response = generateController.setTeacherToSections(sectionData);
         Assert.assertEquals(sectionData, response);
+
+        System.out.println(sectionData.get(0));
+        System.out.println(sectionData.get(1));
+        System.out.println(sectionData.get(2));
+        System.out.println(sectionData.get(3));
+        System.out.println(sectionData.get(4));
+        System.out.println(sectionData.get(5));
+        System.out.println(sectionData.get(6));
+        System.out.println(teacherData.get(0));
    }
+
+
 }

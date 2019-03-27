@@ -48,6 +48,7 @@ public class Teacher {
         this.currentNumStudent = 0;
         this.className = className;
         this.sections = new ArrayList<>();
+        this.prep = 0;
     }
 
     public Teacher(String id, String name, String department) {
@@ -153,7 +154,7 @@ public class Teacher {
         this.sections = sections;
     }
 
-    public void addClass(Section section){
+    public void addSection(Section section){
         this.sections.add(section);
     }
 
@@ -163,6 +164,13 @@ public class Teacher {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public int getMaxNumSections(){
+        if(!is80Percent)
+            return 5;
+        else
+            return 4;
     }
 
     @Override
