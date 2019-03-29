@@ -12,6 +12,7 @@ public class Section extends Class {
     private int period_num;
     private List<Student> students;
     private String teacherID;
+    private int maxStudent;
 
     public Section( ){
 
@@ -23,6 +24,7 @@ public class Section extends Class {
         this.period_num = period_num;
         this.students = students;
         this.teacherID = teacherID;
+        this.maxStudent = 30;
     }
 
     public Section(Class c, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -31,6 +33,7 @@ public class Section extends Class {
         this.period_num = period_num;
         this.students = students;
         this.teacherID = teacherID;
+        this.maxStudent = 30;
     }
 
     public Section(Class c, int section_num) {
@@ -39,6 +42,7 @@ public class Section extends Class {
         this.section_num = section_num;
         this.teacherID = "";
         period_num = -1;
+        this.maxStudent = 30;
     }
 
     public Section(Class c, int section_num, List<Student> students) {
@@ -47,6 +51,7 @@ public class Section extends Class {
         this.section_num = section_num;
         this.students = students;
         period_num = -1;
+        this.maxStudent = 30;
     }
 
 
@@ -86,6 +91,17 @@ public class Section extends Class {
         this.teacherID = teacherID;
     }
 
+    public int getMaxStudent() {
+        return maxStudent;
+    }
+
+    public void setMaxStudent(int maxStudent) {
+        this.maxStudent = maxStudent;
+    }
+
+    public boolean canAddStudent(){
+        return maxStudent >= students.size()+1;
+    }
     @Override
     public String toString() {
         return "Section{" +
