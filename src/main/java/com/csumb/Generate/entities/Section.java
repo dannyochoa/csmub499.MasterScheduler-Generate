@@ -2,6 +2,7 @@ package com.csumb.Generate.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,9 +13,10 @@ public class Section extends Class {
     private int period_num;
     private List<Student> students;
     private String teacherID;
+    private int maxStudent;
 
     public Section( ){
-
+        this.students = new ArrayList<>();
     }
 
     public Section(String department, String className, String classRoom, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -23,6 +25,8 @@ public class Section extends Class {
         this.period_num = period_num;
         this.students = students;
         this.teacherID = teacherID;
+        this.maxStudent = 30;
+        this.students = new ArrayList<>();
     }
 
     public Section(Class c, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -31,6 +35,7 @@ public class Section extends Class {
         this.period_num = period_num;
         this.students = students;
         this.teacherID = teacherID;
+        this.maxStudent = 30;
     }
 
     public Section(Class c, int section_num) {
@@ -38,7 +43,9 @@ public class Section extends Class {
         this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.teacherID = "";
-        period_num = -1;
+        this.period_num = -1;
+        this.maxStudent = 30;
+        this.students = new ArrayList<>();
     }
 
     public Section(Class c, int section_num, List<Student> students) {
@@ -46,7 +53,8 @@ public class Section extends Class {
         this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.students = students;
-        period_num = -1;
+        this.period_num = -1;
+        this.maxStudent = 30;
     }
 
 
@@ -86,6 +94,17 @@ public class Section extends Class {
         this.teacherID = teacherID;
     }
 
+    public int getMaxStudent() {
+        return maxStudent;
+    }
+
+    public void setMaxStudent(int maxStudent) {
+        this.maxStudent = maxStudent;
+    }
+
+    public boolean canAddStudent(){
+        return maxStudent >= students.size()+1;
+    }
     @Override
     public String toString() {
         return "Section{" +

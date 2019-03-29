@@ -52,10 +52,10 @@ public class GenerateController {
             sections = createSections(entry.getKey(),entry.getValue().size());
             sections = setTeacherToSections(sections);
             allSections.addAll(sections);
-            setStudentsSchedule(sections, entry.getValue());
+            setStudentToSections(sections, entry.getValue());
         }
-
-
+//        System.out.println("aaaaaaaaaaaaaaaaaaaa");
+        //sectionRepository.saveAll(allSections);
     }
 
     public Map<Class,List<Student>> mapStudentToClasses(){
@@ -84,12 +84,13 @@ public class GenerateController {
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
         }
+        sectionRepository.saveAll(allSections);
         return allSections;
     }
 
     public List<Section> setTeacherToSections(List<Section> sections){
         String className = sections.get(0).getClassName();
-        List<Teacher> teachers = teacherRepository.findAllByClassName(className);
+            List<Teacher> teachers = teacherRepository.findAllByClassName(className);
         int teacherIndex = 0;
         int i =0;
         while(i < sections.size() && teacherIndex < teachers.size()) {
@@ -143,50 +144,43 @@ public class GenerateController {
         return -1;
     }
 
-    public List<Section> setStudentToSections(List<Student> students, List<Section> sections){
-        //separate students
-        List<Student> fastStudents =  new ArrayList<>();
-        List<Student> greenStudents =  new ArrayList<>();
-        List<Student> normalStudents = new ArrayList<>();
-
-        for(int i =0; i < students.size(); i++){
-            if(students.get(i).getAcademy().equals("fast")){
-                fastStudents.add(students.get(i));
-            }
-            else if(students.get(i).getAcademy().equals("green")){
-                greenStudents.add(students.get(i));
-            }
-            else{
-                normalStudents.add(students.get(i));
-            }
-        }
-
-        int sectionIndex = 0;
-
-        if(!fastStudents.isEmpty()) {
-//            proposeClass(sections)
-            sections.get(sectionIndex).setStudents(fastStudents);
-            sectionIndex++;
-        }
-        if(!greenStudents.isEmpty()) {
-            sections.get(sectionIndex).setStudents(greenStudents);
-            sectionIndex++;
-        }
+    public List<Section> setStudentToSections(List<Section> sections, List<Student> students){
 
         String className = sections.get(0).getClassName();
+        students = arrangeStudentPriority(students,className);
 
-        normalStudents = arrangeStudentPriority(normalStudents,className);
-        //refactor this with stable marriage algorithm
-        int studentIndex = 0;
-        for(int i = sectionIndex; i < sections.size(); i++){
-            sections.get(i).setStudents(normalStudents.subList(studentIndex, studentIndex + 30));
-            studentIndex+=30;
+        for(Student s: students){
+            int loc = findAvailableSection(sections, s);
+            sections.get(loc).addStudent(s);
+            Section section = sections.get(loc);
+            s.setPeriod(section.getPeriod_num()-1,section);
+            Optional<Teacher> teacher = teacherRepository.findById(section.getTeacherID());
+            teacher.get().updateCurrentNumStudents(1);
+            teacherRepository.save(teacher.get());
+            studentRepository.save(s);
         }
+        sectionRepository.saveAll(sections);
         return sections;
     }
 
-    public void setStudentsSchedule(List<Section> sections, List<Student> students){
-
+    public int findAvailableSection(List<Section> sections, Student student){
+        boolean canAdd;
+        for(int i =0; i < sections.size(); i++){
+            canAdd = true;
+            Optional<Teacher> teacher = teacherRepository.findById(sections.get(i).getTeacherID());
+            if(teacher.isPresent()){
+                Teacher t = teacher.get();
+                if(t.getMaxNumStudent() <= t.getCurrentNumStudent()){
+                    canAdd = false;
+                }
+            }
+            if(student.isPeriodAvailable(sections.get(i).getPeriod_num()) &&
+                    sections.get(i).canAddStudent() && canAdd) {
+                System.out.println("in here");
+                return i;
+            }
+        }
+        return -1;
     }
 
     public List<Student> arrangeStudentPriority(List<Student> students, String className){
