@@ -40,7 +40,7 @@ public class Section extends Class {
 
     public Section(Class c, int section_num) {
         super(c);
-        this.setClass_id(this.getClass_id() + "_" + section_num);
+        this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.teacherID = "";
         this.period_num = -1;
@@ -50,7 +50,7 @@ public class Section extends Class {
 
     public Section(Class c, int section_num, List<Student> students) {
         super(c);
-        this.setClass_id(this.getClass_id() + "_" + section_num);
+        this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.students = students;
         this.period_num = -1;
