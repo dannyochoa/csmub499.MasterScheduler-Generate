@@ -54,8 +54,8 @@ public class GenerateController {
             allSections.addAll(sections);
             setStudentToSections(sections, entry.getValue());
         }
-
-
+//        System.out.println("aaaaaaaaaaaaaaaaaaaa");
+        //sectionRepository.saveAll(allSections);
     }
 
     public Map<Class,List<Student>> mapStudentToClasses(){
@@ -84,6 +84,7 @@ public class GenerateController {
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
         }
+        sectionRepository.saveAll(allSections);
         return allSections;
     }
 
@@ -147,21 +148,19 @@ public class GenerateController {
 
         String className = sections.get(0).getClassName();
         students = arrangeStudentPriority(students,className);
-        proposeClass(sections,students);
-        return sections;
-    }
 
-
-    public void proposeClass(List<Section> sections, List<Student> students){
         for(Student s: students){
             int loc = findAvailableSection(sections, s);
             sections.get(loc).addStudent(s);
             Section section = sections.get(loc);
-            s.setPeriod(section.getPeriod_num(),section);
+            s.setPeriod(section.getPeriod_num()-1,section);
             Optional<Teacher> teacher = teacherRepository.findById(section.getTeacherID());
             teacher.get().updateCurrentNumStudents(1);
             teacherRepository.save(teacher.get());
+            studentRepository.save(s);
         }
+        sectionRepository.saveAll(sections);
+        return sections;
     }
 
     public int findAvailableSection(List<Section> sections, Student student){
@@ -175,8 +174,9 @@ public class GenerateController {
                     canAdd = false;
                 }
             }
-            if(student.isPeriodAvilable(sections.get(i).getPeriod_num()) &&
+            if(student.isPeriodAvailable(sections.get(i).getPeriod_num()) &&
                     sections.get(i).canAddStudent() && canAdd) {
+                System.out.println("in here");
                 return i;
             }
         }

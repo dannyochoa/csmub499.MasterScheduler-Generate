@@ -17,14 +17,17 @@ public class Student {
     private int grade;
     private List<Pair<Class, Boolean>> preferred_classes;
     private String academy;
-    private List<Section> schedule;
+    private List<String> schedule;
 
     public Student() {
         this.name ="";
         this.grade = 0;
         this.preferred_classes = new ArrayList<>();
         this.academy = "";
-        this.schedule = new ArrayList<>(6);
+        this.schedule = new ArrayList<>();
+        for(int i =0; i < 6;i++){
+            schedule.add("");
+        }
     }
 
     public Student(String id, String name, int grade, String academy) {
@@ -33,7 +36,10 @@ public class Student {
         this.grade = grade;
         this.academy = academy;
         this.preferred_classes = new ArrayList<>();
-        this.schedule = new ArrayList<>(6);
+        this.schedule = new ArrayList<>();
+        for(int i =0; i < 6;i++){
+            schedule.add("");
+        }
     }
 
     public Student(String id, String name, int grade) {
@@ -42,7 +48,10 @@ public class Student {
         this.grade = grade;
         this.academy = "";
         this.preferred_classes = new ArrayList<>();
-        this.schedule = new ArrayList<>(6);
+        this.schedule = new ArrayList<>();
+        for(int i =0; i < 6;i++){
+            schedule.add("");
+        }
     }
 
     public String getId() {
@@ -94,21 +103,23 @@ public class Student {
         return false;
     }
 
-    public List<Section> getSchedule() {
+    public List<String> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(List<Section> schedule) {
+    public void setSchedule(List<String> schedule) {
         this.schedule = schedule;
     }
 
     public void setPeriod(int time, Section section){
-        schedule.set(time,section);
+        System.out.println("here");
+        schedule.set(time,section.getClassName());
     }
 
-    public boolean isPeriodAvilable(int time){
-        System.out.println(schedule.get(time).getClass_id());
-        return schedule.get(time).getClass_id().isEmpty();
+    public boolean isPeriodAvailable(int time){
+        System.out.println(time);
+        System.out.println("value " + schedule.get(time));
+        return schedule.get(time).equals("");
     }
 
     @Override
@@ -119,6 +130,7 @@ public class Student {
                 ", grade=" + grade +
                 ", preferred_classes=" + preferred_classes +
                 ", academy='" + academy + '\'' +
+                ", schedule=" + schedule +
                 '}';
     }
 

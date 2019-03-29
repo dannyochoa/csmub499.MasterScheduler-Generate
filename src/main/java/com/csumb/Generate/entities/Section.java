@@ -2,6 +2,7 @@ package com.csumb.Generate.entities;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ public class Section extends Class {
     private int maxStudent;
 
     public Section( ){
-
+        this.students = new ArrayList<>();
     }
 
     public Section(String department, String className, String classRoom, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -25,6 +26,7 @@ public class Section extends Class {
         this.students = students;
         this.teacherID = teacherID;
         this.maxStudent = 30;
+        this.students = new ArrayList<>();
     }
 
     public Section(Class c, int section_num, int period_num, List<Student> students, String teacherID) {
@@ -41,8 +43,9 @@ public class Section extends Class {
         this.setClass_id(this.getClass_id() + "_" + section_num);
         this.section_num = section_num;
         this.teacherID = "";
-        period_num = -1;
+        this.period_num = -1;
         this.maxStudent = 30;
+        this.students = new ArrayList<>();
     }
 
     public Section(Class c, int section_num, List<Student> students) {
@@ -50,7 +53,7 @@ public class Section extends Class {
         this.setClass_id(this.getClass_id() + "_" + section_num);
         this.section_num = section_num;
         this.students = students;
-        period_num = -1;
+        this.period_num = -1;
         this.maxStudent = 30;
     }
 

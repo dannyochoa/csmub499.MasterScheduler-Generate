@@ -33,6 +33,13 @@ public class Class {
         this.classRoom = "";
     }
 
+    public Class(String department, String className, String roomNum, String id) {
+        this.department = department;
+        this.className = className;
+        this.class_id = id;
+        this.classRoom = roomNum;
+    }
+
 
     public Class(Class c) {
         this.class_id = c.getClass_id();
