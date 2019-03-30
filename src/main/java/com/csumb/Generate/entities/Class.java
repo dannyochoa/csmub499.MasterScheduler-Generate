@@ -36,7 +36,7 @@ public class Class {
     public Class(String department, String className, String roomNum, String id) {
         this.department = department;
         this.className = className;
-        this.class_id = id;
+        this.id = id;
         this.classRoom = roomNum;
     }
 

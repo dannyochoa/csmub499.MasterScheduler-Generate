@@ -151,13 +151,19 @@ public class GenerateController {
 
         for(Student s: students){
             int loc = findAvailableSection(sections, s);
-            sections.get(loc).addStudent(s);
-            Section section = sections.get(loc);
-            s.setPeriod(section.getPeriod_num()-1,section);
-            Optional<Teacher> teacher = teacherRepository.findById(section.getTeacherID());
-            teacher.get().updateCurrentNumStudents(1);
-            teacherRepository.save(teacher.get());
-            studentRepository.save(s);
+            if(loc == -1){
+                System.out.println(s);
+            }else {
+                sections.get(loc).addStudent(s);
+                Section section = sections.get(loc);
+                s.setPeriod(section.getPeriod_num(), section);
+                Optional<Teacher> teacher = teacherRepository.findById(section.getTeacherID());
+                if(teacher.isPresent()) {
+                    teacher.get().updateCurrentNumStudents(1);
+                    teacherRepository.save(teacher.get());
+                }
+                studentRepository.save(s);
+            }
         }
         sectionRepository.saveAll(sections);
         return sections;
