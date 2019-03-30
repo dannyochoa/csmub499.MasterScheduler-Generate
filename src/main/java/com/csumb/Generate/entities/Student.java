@@ -113,13 +113,13 @@ public class Student {
 
     public void setPeriod(int time, Section section){
         System.out.println("here");
-        schedule.set(time,section.getClassName());
+        schedule.set(time-1,section.getClassName());
     }
 
     public boolean isPeriodAvailable(int time){
-        System.out.println(time);
-        System.out.println("value " + schedule.get(time));
-        return schedule.get(time).equals("");
+        System.out.println(time-1);
+        System.out.println("value " + schedule.get(time-1));
+        return schedule.get(time-1).equals("");
     }
 
     @Override
