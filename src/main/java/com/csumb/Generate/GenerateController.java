@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-import org.springframework.data.util.Pair;
-
 @RestController
 public class GenerateController {
     @Autowired
@@ -60,18 +58,20 @@ public class GenerateController {
 
     public Map<Class,List<Student>> mapStudentToClasses(){
         Map<Class,List<Student>> studentsToClasses = new HashMap<>();
+        Map<String, Class> classNameToClasses = new HashMap<>();
         List<Student> students = studentRepository.findAll();
         List<Class> classes = classRepository.findAll();
 
         for (Class c: classes) {
             if (!studentsToClasses.containsKey(c)) {
                 studentsToClasses.put(c, new ArrayList<>());
+                classNameToClasses.put(c.getClassName(),c);
             }
         }
 
         for (Student s: students) {
-            for (Pair<Class, Boolean> student_c : s.getPreferred_classes()) {
-                Class aClass = student_c.getFirst();
+            for (String s_class : s.getPreferredClasses()) {
+                Class aClass = classNameToClasses.get(s_class);
                 studentsToClasses.get(aClass).add(s);
             }
         }
