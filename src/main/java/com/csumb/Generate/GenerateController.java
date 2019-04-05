@@ -38,6 +38,7 @@ public class GenerateController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("generate")
     public void generate(){
         List<Section> allSections = new ArrayList<>();
