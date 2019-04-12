@@ -13,17 +13,20 @@ public class Class {
     private String department;
     private String className;
     private String classRoom;
+    private int maxNumStudentPerSection;
 
     public Class() {
         this.department = "";
         this.className = "";
         this.classRoom = "";
+        maxNumStudentPerSection = 30;
     }
 
     public Class(String department, String className) {
         this.department = department;
         this.className = className;
         this.classRoom = "";
+        maxNumStudentPerSection = 30;
     }
 
     public Class(String department, String className, String id) {
@@ -31,13 +34,24 @@ public class Class {
         this.className = className;
         this.id = id;
         this.classRoom = "";
+        maxNumStudentPerSection = 30;
     }
+
+    public Class(String department, String className, String id, int maxNumStudentPerSection){
+        this.department = department;
+        this.className = className;
+        this.id = id;
+        this.classRoom = "";
+        this.maxNumStudentPerSection = maxNumStudentPerSection;
+    }
+
 
     public Class(String department, String className, String roomNum, String id) {
         this.department = department;
         this.className = className;
         this.id = id;
         this.classRoom = roomNum;
+        maxNumStudentPerSection = 30;
     }
 
 
@@ -78,6 +92,14 @@ public class Class {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getMaxNumStudentPerSection() {
+        return maxNumStudentPerSection;
+    }
+
+    public void setMaxNumStudentPerSection(int maxNumStudentPerSection) {
+        this.maxNumStudentPerSection = maxNumStudentPerSection;
     }
 
     @Override
