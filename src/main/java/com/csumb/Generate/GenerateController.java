@@ -76,8 +76,9 @@ public class GenerateController {
 
     public List<Section> createSections(Class c,int numStudents){
         List<Section> allSections = sectionRepository.findAllByClassName(c.getClassName());
-        int section_num = numStudents/c.getMaxNumStudentPerSection();
+        int section_num = c.getMaxNumSections();
         section_num = section_num - allSections.size();
+
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
         }
