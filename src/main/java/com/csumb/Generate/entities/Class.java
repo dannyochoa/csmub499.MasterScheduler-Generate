@@ -56,6 +56,7 @@ public class Class {
         this.className = className;
         this.id = id;
         this.classRoom = "";
+        this.maxNumSections = 5;
         this.maxNumStudentPerSection = maxNumStudentPerSection;
     }
 
@@ -65,6 +66,7 @@ public class Class {
         this.className = className;
         this.id = id;
         this.classRoom = roomNum;
+        this.maxNumSections = 5;
         maxNumStudentPerSection = 30;
     }
 
@@ -74,6 +76,8 @@ public class Class {
         this.department = c.getDepartment();
         this.className = c.getClassName();
         this.classRoom = c.getClassRoom();
+        this.maxNumSections = 5;
+        maxNumStudentPerSection = 30;
     }
 
     public String getDepartment() {

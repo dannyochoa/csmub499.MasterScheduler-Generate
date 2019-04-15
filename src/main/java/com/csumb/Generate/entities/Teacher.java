@@ -17,12 +17,13 @@ public class Teacher {
     private int prep;
     private String preferred_room;
     private boolean is80Percent;
-    // for green academy, fast academy
-    private String academy; // Re named this for to be more specific
+    private String academy;
     private int maxNumStudent;
     private int currentNumStudent;
     private List<Section> sections;
     private String className;
+    private String className2;
+    private String className3;
 
     public Teacher( ) {
         this.name = "";
@@ -35,6 +36,8 @@ public class Teacher {
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
         this.className = "";
+        this.className2 = "";
+        this.className2 = "";
     }
 
     public Teacher(String id, String name, String department, boolean is80Percent,
@@ -48,7 +51,8 @@ public class Teacher {
         this.currentNumStudent = 0;
         this.className = className;
         this.sections = new ArrayList<>();
-        this.prep = 0;
+        this.className2 = "";
+        this.className3 = "";
     }
 
     public Teacher(String id, String name, String department) {
@@ -58,6 +62,8 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
+        this.className2 = "";
+        this.className3 = "";
     }
 
     public Teacher(String id, String name, String department, String className) {
@@ -68,14 +74,23 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
+        this.className2 = "";
+        this.className3 = "";
+    }
+
+    public Teacher(String id, String name,String department, String className, String className2,
+                   String className3,int prep) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+        this.className = className;
+        this.className2 = className2;
+        this.className3 = className3;
+        this.prep = prep;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void updateCurrentNumStudents(int num){
-        this.currentNumStudent += num;
     }
 
     public void setId(String id) {
@@ -154,7 +169,7 @@ public class Teacher {
         this.sections = sections;
     }
 
-    public void addSection(Section section){
+    public void addClass(Section section){
         this.sections.add(section);
     }
 
@@ -166,11 +181,34 @@ public class Teacher {
         this.className = className;
     }
 
+    public String getClassName2() {
+        return className2;
+    }
+
+    public void setClassName2(String className2) {
+        this.className2 = className2;
+    }
+
+    public String getClassName3() {
+        return className3;
+    }
+
+    public void setClassName3(String className3) {
+        this.className3 = className3;
+    }
+
+    public void addSection(Section section){
+        this.sections.add(section);
+    }
     public int getMaxNumSections(){
         if(!is80Percent)
             return 5;
         else
             return 4;
+    }
+
+    public void updateCurrentNumStudents(int num){
+        this.currentNumStudent += num;
     }
 
     @Override
@@ -186,6 +224,9 @@ public class Teacher {
                 ", maxNumStudent=" + maxNumStudent +
                 ", currentNumStudent=" + currentNumStudent +
                 ", sections=" + sections +
+                ", className='" + className + '\'' +
+                ", className2='" + className2 + '\'' +
+                ", className3='" + className3 + '\'' +
                 '}';
     }
 
@@ -201,13 +242,16 @@ public class Teacher {
                 id.equals(teacher.id) &&
                 name.equals(teacher.name) &&
                 department.equals(teacher.department) &&
-                Objects.equals(preferred_room, teacher.preferred_room) &&
-                academy.equals(teacher.academy) &&
-                Objects.equals(sections, teacher.sections);
+                preferred_room.equals(teacher.preferred_room) &&
+                Objects.equals(academy, teacher.academy) &&
+                Objects.equals(sections, teacher.sections) &&
+                className.equals(teacher.className) &&
+                className2.equals(teacher.className2) &&
+                className3.equals(teacher.className3);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, department, prep, preferred_room, is80Percent, academy, maxNumStudent, currentNumStudent, sections);
+        return Objects.hash(id, name, department, prep, preferred_room, is80Percent, academy, maxNumStudent, currentNumStudent, sections, className, className2, className3);
     }
 }

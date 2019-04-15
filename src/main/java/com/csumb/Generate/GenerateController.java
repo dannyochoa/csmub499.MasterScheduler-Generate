@@ -75,9 +75,8 @@ public class GenerateController {
     }
 
     public List<Section> createSections(Class c,int numStudents){
-        List<Section> allSections = sectionRepository.findAllByClassName(c.getClassName());
+        List<Section> allSections = new ArrayList<>();
         int section_num = c.getMaxNumSections();
-        section_num = section_num - allSections.size();
 
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
@@ -89,6 +88,8 @@ public class GenerateController {
     public List<Section> setTeacherToSections(List<Section> sections){
         String className = sections.get(0).getClassName();
             List<Teacher> teachers = teacherRepository.findAllByClassName(className);
+            teachers.addAll(teacherRepository.findAllByClassName2(className));
+            teachers.addAll(teacherRepository.findAllByClassName3(className));
         int teacherIndex = 0;
         int i =0;
         while(i < sections.size() && teacherIndex < teachers.size()) {
