@@ -28,10 +28,8 @@ public class GenerateController {
     private ISectionRepository sectionRepository;
 
     private Map<Integer, List<Section>> schedule;
-    private int maxNumStudentPerSection;
 
     GenerateController(){
-        this.maxNumStudentPerSection = 30;
         this.schedule = new HashMap<>();
         for(int i =1; i <= 6; i++){
             this.schedule.put(i,new ArrayList<>());
@@ -41,7 +39,6 @@ public class GenerateController {
     @CrossOrigin(origins = "*")
     @GetMapping("generate")
     public void generate(){
-        List<Section> allSections = new ArrayList<>();
         Map<Class,List<Student>> studentsToClasses = mapStudentToClasses();
 
         Iterator<Map.Entry<Class, List<Student>>> itr = studentsToClasses.entrySet().iterator();
@@ -50,11 +47,9 @@ public class GenerateController {
             List<Section> sections;
             sections = createSections(entry.getKey(),entry.getValue().size());
             sections = setTeacherToSections(sections);
-            allSections.addAll(sections);
             setStudentToSections(sections, entry.getValue());
         }
-//        System.out.println("aaaaaaaaaaaaaaaaaaaa");
-        //sectionRepository.saveAll(allSections);
+
     }
 
     public Map<Class,List<Student>> mapStudentToClasses(){
@@ -81,7 +76,8 @@ public class GenerateController {
 
     public List<Section> createSections(Class c,int numStudents){
         List<Section> allSections = new ArrayList<>();
-        int section_num = numStudents/maxNumStudentPerSection;
+        int section_num = c.getMaxNumSections();
+
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
         }
@@ -92,6 +88,8 @@ public class GenerateController {
     public List<Section> setTeacherToSections(List<Section> sections){
         String className = sections.get(0).getClassName();
             List<Teacher> teachers = teacherRepository.findAllByClassName(className);
+            teachers.addAll(teacherRepository.findAllByClassName2(className));
+            teachers.addAll(teacherRepository.findAllByClassName3(className));
         int teacherIndex = 0;
         int i =0;
         while(i < sections.size() && teacherIndex < teachers.size()) {
@@ -107,6 +105,8 @@ public class GenerateController {
                     teachers.get(teacherIndex).setPrep(prep);
                     teacherIndex++;
                 }
+            }else{
+                i++;
             }
         }
         setTimeForSections(sections,null);
