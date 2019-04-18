@@ -18,8 +18,13 @@ public class Section extends Class {
     private int maxStudent;
     private String room;
 
-    public Section( ){
+    public Section() {
+        this.section_num = -1;
+        this.period_num = -1;
         this.roster = new ArrayList<>();
+        this.teacherID ="";
+        this.maxStudent = 30;
+        this.room = "";
     }
 
     public Section(Class c, int section_num) {
