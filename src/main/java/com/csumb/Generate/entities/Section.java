@@ -16,27 +16,10 @@ public class Section extends Class {
     private List<Pair<String, String>> roster;
     private String teacherID;
     private int maxStudent;
+    private String room;
 
     public Section( ){
         this.roster = new ArrayList<>();
-    }
-
-    public Section(String department, String className, String classRoom, int section_num, int period_num, List<Pair<String, String>> students, String teacherID) {
-        super(department, className, classRoom);
-        this.section_num = section_num;
-        this.period_num = period_num;
-        this.roster = students;
-        this.teacherID = teacherID;
-        this.maxStudent = 30;
-    }
-
-    public Section(Class c, int section_num, int period_num, List<Pair<String, String>> students, String teacherID) {
-        super(c);
-        this.section_num = section_num;
-        this.period_num = period_num;
-        this.roster = students;
-        this.teacherID = teacherID;
-        this.maxStudent = 30;
     }
 
     public Section(Class c, int section_num) {
@@ -47,6 +30,7 @@ public class Section extends Class {
         this.period_num = -1;
         this.maxStudent = 30;
         this.roster = new ArrayList<>();
+        this.room ="";
     }
 
     public Section(Class c, int section_num, List<Pair<String, String>> students) {
@@ -56,6 +40,7 @@ public class Section extends Class {
         this.roster = students;
         this.period_num = -1;
         this.maxStudent = 30;
+        this.room ="";
     }
 
 
@@ -106,13 +91,24 @@ public class Section extends Class {
     public boolean canAddStudent(){
         return maxStudent >= roster.size()+1;
     }
+
+    public String getRoom() {
+        return room;
+    }
+
+    public void setRoom(String room) {
+        this.room = room;
+    }
+
     @Override
     public String toString() {
         return "Section{" +
                 "section_num=" + section_num +
                 ", period_num=" + period_num +
-                ", students=" + roster +
+                ", roster=" + roster +
                 ", teacherID='" + teacherID + '\'' +
+                ", maxStudent=" + maxStudent +
+                ", room='" + room + '\'' +
                 '}';
     }
 
@@ -124,12 +120,14 @@ public class Section extends Class {
         Section section = (Section) o;
         return section_num == section.section_num &&
                 period_num == section.period_num &&
-                Objects.equals(roster, section.roster) &&
-                Objects.equals(teacherID, section.teacherID);
+                maxStudent == section.maxStudent &&
+                roster.equals(section.roster) &&
+                teacherID.equals(section.teacherID) &&
+                room.equals(section.room);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), section_num, period_num, roster, teacherID);
+        return Objects.hash(super.hashCode(), section_num, period_num, roster, teacherID, maxStudent, room);
     }
 }
