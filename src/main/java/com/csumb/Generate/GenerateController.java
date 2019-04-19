@@ -29,6 +29,8 @@ public class GenerateController {
 
     private Map<Integer, List<Section>> schedule;
 
+    private static boolean isGenerated = false;
+
     GenerateController(){
         this.schedule = new HashMap<>();
         for(int i =1; i <= 6; i++){
@@ -39,6 +41,7 @@ public class GenerateController {
     @CrossOrigin(origins = "*")
     @GetMapping("generate")
     public void generate(){
+        isGenerated = true;
         Map<Class,List<Student>> studentsToClasses = mapStudentToClasses();
 
         Iterator<Map.Entry<Class, List<Student>>> itr = studentsToClasses.entrySet().iterator();
@@ -200,5 +203,18 @@ public class GenerateController {
             }
         }
         return tempStudents;
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("remove")
+    public boolean remove() {
+        isGenerated = false;
+        return false;
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("isgenerated")
+    public boolean isGenerate(){
+        return isGenerated;
     }
 }
