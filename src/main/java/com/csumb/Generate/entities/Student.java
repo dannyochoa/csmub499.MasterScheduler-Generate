@@ -16,16 +16,19 @@ public class Student {
     private List<Boolean> preferred;
     private String academy;
     private List<String> schedule;
+    private List<String> scheduleId;
 
     public Student() {
-        this.name ="";
+        this.name = "";
         this.grade = 0;
         this.preferredClasses = new ArrayList<>();
         this.preferred = new ArrayList<>();
         this.academy = "";
         this.schedule = new ArrayList<>();
-        for(int i =0; i < 6;i++){
+        this.scheduleId = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
             schedule.add("");
+            scheduleId.add("");
         }
     }
 
@@ -37,8 +40,10 @@ public class Student {
         this.preferredClasses = new ArrayList<>();
         this.preferred = new ArrayList<>();
         this.schedule = new ArrayList<>();
-        for(int i =0; i < 6;i++){
+        this.scheduleId = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
             schedule.add("");
+            scheduleId.add("");
         }
     }
 
@@ -50,13 +55,15 @@ public class Student {
         this.preferredClasses = new ArrayList<>();
         this.preferred = new ArrayList<>();
         this.schedule = new ArrayList<>();
-        for(int i =0; i < 6;i++){
+        this.scheduleId = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
             schedule.add("");
+            scheduleId.add("");
         }
     }
 
     public Student(String id, String name, int grade,
-                   String academy, List<String> preferred_classes,List<Boolean> preferred){
+                   String academy, List<String> preferred_classes, List<Boolean> preferred) {
         this.id = id;
         this.name = name;
         this.grade = grade;
@@ -64,10 +71,11 @@ public class Student {
         this.preferredClasses = preferred_classes;
         this.preferred = preferred;
         this.schedule = new ArrayList<>();
-        for(int i =0; i < 6;i++){
+        this.scheduleId = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
             schedule.add("");
+            scheduleId.add("");
         }
-
     }
 
     public String getId() {
@@ -110,9 +118,9 @@ public class Student {
         this.academy = academy;
     }
 
-    public boolean isClassPreferred(String className){
-        for(int i =0; i < preferredClasses.size(); i++){
-            if(preferredClasses.get(i).equals(className)){
+    public boolean isClassPreferred(String className) {
+        for (int i = 0; i < preferredClasses.size(); i++) {
+            if (preferredClasses.get(i).equals(className)) {
                 return preferred.get(i);
             }
         }
@@ -127,15 +135,16 @@ public class Student {
         this.schedule = schedule;
     }
 
-    public void setPeriod(int time, Section section){
+    public void setPeriod(int time, Section section) {
         System.out.println("here");
-        schedule.set(time-1,section.getClassName());
+        schedule.set(time - 1, section.getClassName());
+        scheduleId.set(time - 1, section.getId());
     }
 
-    public boolean isPeriodAvailable(int time){
-        System.out.println(time-1);
-        System.out.println("value " + schedule.get(time-1));
-        return schedule.get(time-1).equals("");
+    public boolean isPeriodAvailable(int time) {
+        System.out.println(time - 1);
+        System.out.println("value " + schedule.get(time - 1));
+        return schedule.get(time - 1).equals("");
     }
 
     public List<Boolean> getPreferred() {
@@ -146,6 +155,45 @@ public class Student {
         this.preferred = preferred;
     }
 
+    public List<String> getScheduleId() {
+        return scheduleId;
+    }
+
+    public void setScheduleId(List<String> scheduleId) {
+        this.scheduleId = scheduleId;
+    }
+
+    public List<String> getData() {
+        List<String> ans = new ArrayList<>();
+        ans.add(this.id);
+        ans.add(this.name);
+        ans.add(Integer.toString(this.grade));
+        ans.add(this.academy);
+        for (int i = 0; i < 6; i++) {
+            if (this.schedule.get(i).equals("")) {
+                ans.add("Please Generate");
+            } else {
+                ans.add(this.schedule.get(i));
+            }
+        }
+        for (int i = 0; i < 6; i++) {
+            ans.add(preferredClasses.get(i));
+            ans.add(Boolean.toString(preferred.get(i)));
+        }
+        return ans;
+    }
+
+    public void setScheduleSection(Section s) {
+        schedule.add(s.getClassName());
+    }
+
+    public void removeScheduleSection(Section s) {
+        schedule.remove(s.getClassName());
+        setSchedule(schedule);
+        System.out.println("here");
+
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -153,8 +201,10 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", grade=" + grade +
                 ", preferredClasses=" + preferredClasses +
+                ", preferred=" + preferred +
                 ", academy='" + academy + '\'' +
                 ", schedule=" + schedule +
+                ", scheduleId=" + scheduleId +
                 '}';
     }
 
@@ -166,12 +216,15 @@ public class Student {
         return grade == student.grade &&
                 id.equals(student.id) &&
                 name.equals(student.name) &&
-                Objects.equals(preferredClasses, student.preferredClasses) &&
-                Objects.equals(academy, student.academy);
+                preferredClasses.equals(student.preferredClasses) &&
+                preferred.equals(student.preferred) &&
+                academy.equals(student.academy) &&
+                schedule.equals(student.schedule) &&
+                scheduleId.equals(student.scheduleId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, grade, preferredClasses, academy);
+        return Objects.hash(id, name, grade, preferredClasses, preferred, academy, schedule, scheduleId);
     }
 }
