@@ -98,7 +98,9 @@ public class GenerateController {
         while(i < sections.size() && teacherIndex < teachers.size()) {
             if(sections.get(i).getTeacherID().equals("")){
                 if(teachers.get(teacherIndex).getSections().size() <
-                    teachers.get(teacherIndex).getMaxNumSections()) {
+                    teachers.get(teacherIndex).getMaxNumSections() &&
+                    teachers.get(teacherIndex).getCurrentNumStudent() <
+                    teachers.get(teacherIndex).getMaxNumStudent()) {
                     sections.get(i).setTeacherID(teachers.get(teacherIndex).getId());
                     teachers.get(teacherIndex).addSection(sections.get(i));
                     i++;
@@ -133,9 +135,9 @@ public class GenerateController {
         List<Integer> prepPeriod = Arrays.asList(1,2,3,4,5,6);
         int index;
         for(int i =0; i < sections.size(); i++){
-            if(sections.get(i).getPeriod_num() == -1) {
+            if(sections.get(i).getPeriodNum() == -1) {
                 index = findMinSection();
-                sections.get(i).setPeriod_num(index);
+                sections.get(i).setPeriodNum(index);
                 schedule.get(index).add(sections.get(i));
                 if(id != null)
                     prepPeriod.set(index-1,-1);
@@ -160,7 +162,7 @@ public class GenerateController {
             }else {
                 sections.get(loc).addStudent(s);
                 Section section = sections.get(loc);
-                s.setPeriod(section.getPeriod_num(), section);
+                s.setPeriod(section.getPeriodNum(), section);
                 Optional<Teacher> teacher = teacherRepository.findById(section.getTeacherID());
                 if(teacher.isPresent()) {
                     teacher.get().updateCurrentNumStudents(1);
@@ -184,7 +186,7 @@ public class GenerateController {
                     canAdd = false;
                 }
             }
-            if(student.isPeriodAvailable(sections.get(i).getPeriod_num()) &&
+            if(student.isPeriodAvailable(sections.get(i).getPeriodNum()) &&
                     sections.get(i).canAddStudent() && canAdd) {
                 System.out.println("in here");
                 return i;

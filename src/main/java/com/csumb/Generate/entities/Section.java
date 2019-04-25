@@ -12,15 +12,16 @@ import java.util.Objects;
 public class Section extends Class {
 
     private int section_num;
-    private int period_num;
+    private int periodNum;
     private List<Pair<String, String>> roster;
     private String teacherID;
     private int maxStudent;
     private String room;
 
     public Section() {
+        super();
         this.section_num = -1;
-        this.period_num = -1;
+        this.periodNum = -1;
         this.roster = new ArrayList<>();
         this.teacherID ="";
         this.maxStudent = 30;
@@ -32,7 +33,7 @@ public class Section extends Class {
         this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.teacherID = "";
-        this.period_num = -1;
+        this.periodNum = -1;
         this.maxStudent = 30;
         this.roster = new ArrayList<>();
         this.room ="";
@@ -43,7 +44,7 @@ public class Section extends Class {
         this.setId(this.getId() + "_" + section_num);
         this.section_num = section_num;
         this.roster = students;
-        this.period_num = -1;
+        this.periodNum = -1;
         this.maxStudent = 30;
         this.room ="";
     }
@@ -57,12 +58,12 @@ public class Section extends Class {
         this.section_num = section_num;
     }
 
-    public int getPeriod_num() {
-        return period_num;
+    public int getPeriodNum() {
+        return periodNum;
     }
 
-    public void setPeriod_num(int period_num) {
-        this.period_num = period_num;
+    public void setPeriodNum(int periodNum) {
+        this.periodNum = periodNum;
     }
 
     public List<Pair<String, String>> getRoster() {
@@ -109,7 +110,7 @@ public class Section extends Class {
     public String toString() {
         return "Section{" +
                 "section_num=" + section_num +
-                ", period_num=" + period_num +
+                ", periodNum=" + periodNum +
                 ", roster=" + roster +
                 ", teacherID='" + teacherID + '\'' +
                 ", maxStudent=" + maxStudent +
@@ -124,7 +125,7 @@ public class Section extends Class {
         if (!super.equals(o)) return false;
         Section section = (Section) o;
         return section_num == section.section_num &&
-                period_num == section.period_num &&
+                periodNum == section.periodNum &&
                 maxStudent == section.maxStudent &&
                 roster.equals(section.roster) &&
                 teacherID.equals(section.teacherID) &&
@@ -133,6 +134,6 @@ public class Section extends Class {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), section_num, period_num, roster, teacherID, maxStudent, room);
+        return Objects.hash(super.hashCode(), section_num, periodNum, roster, teacherID, maxStudent, room);
     }
 }
