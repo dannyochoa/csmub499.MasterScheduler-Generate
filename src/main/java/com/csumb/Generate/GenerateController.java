@@ -79,8 +79,13 @@ public class GenerateController {
 
     public List<Section> createSections(Class c,int numStudents){
         List<Section> allSections = new ArrayList<>();
-        int section_num = c.getMaxNumSections();
 
+        int section_num = numStudents/c.getMaxNumStudentPerSection();
+        if(section_num > c.getMaxNumSections())
+            section_num = c.getMaxNumSections();
+        if(section_num == 0)
+            section_num = 1;
+        System.out.println("section num " + section_num);
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
         }
@@ -219,4 +224,30 @@ public class GenerateController {
     public boolean isGenerate(){
         return isGenerated;
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getschedule")
+    public Map<String, List<Teacher>> getSchedule(){
+        if(!isGenerated)
+            return null;
+        List<Teacher> teachers = teacherRepository.findAll();
+        Map<String, List<Teacher>> ans = new HashMap<>();
+        String department;
+        for(Teacher t: teachers){
+            department = t.getDepartment();
+            if(ans.containsKey(department)){
+                List<Teacher> temp;
+                System.out.println("here");
+                temp = ans.get(department);
+                temp.add(t);
+                ans.replace(department,temp);
+            }else{
+                List<Teacher> temp = new ArrayList<>();
+                temp.add(t);
+                ans.put(department, temp);
+            }
+        }
+        return ans;
+    }
+
 }
