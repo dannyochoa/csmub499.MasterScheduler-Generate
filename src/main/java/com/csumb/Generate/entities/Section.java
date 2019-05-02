@@ -50,6 +50,17 @@ public class Section extends Class {
     }
 
 
+    public Section(Class c, int section_num, int perNum) {
+        super(c);
+        this.setId(this.getId() + "_" + section_num);
+        this.section_num = section_num;
+        this.roster = new ArrayList<>();
+        this.periodNum = perNum;
+        this.maxStudent = 30;
+        this.room ="";
+    }
+
+
     public int getSection_num() {
         return section_num;
     }
@@ -75,7 +86,9 @@ public class Section extends Class {
     }
 
     public void addStudent(Student student) {
-        this.roster.add(Pair.of(student.getId(),student.getName()));
+        if(this.roster.add(Pair.of(student.getId(),student.getName()))){
+            System.out.println("adding student to roster");
+        }
     }
 
     public String getTeacherID() {

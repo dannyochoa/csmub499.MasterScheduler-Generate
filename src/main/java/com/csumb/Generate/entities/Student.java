@@ -136,14 +136,14 @@ public class Student {
     }
 
     public void setPeriod(int time, Section section) {
-        System.out.println("here");
+        System.out.println("setting student schedule");
         schedule.set(time - 1, section.getClassName());
         scheduleId.set(time - 1, section.getId());
     }
 
     public boolean isPeriodAvailable(int time) {
-        System.out.println(time - 1);
-        System.out.println("value " + schedule.get(time - 1));
+        if(!schedule.get(time - 1).equals(""))
+            System.out.println("spot is taken" + schedule.get(time-1));
         return schedule.get(time - 1).equals("");
     }
 
