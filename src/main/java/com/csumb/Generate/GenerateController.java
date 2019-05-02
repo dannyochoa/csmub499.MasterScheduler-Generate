@@ -227,24 +227,27 @@ public class GenerateController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/getschedule")
-    public Map<String, List<Teacher>> getSchedule(){
+    public List<List<Teacher>> getSchedule(){
         if(!isGenerated)
             return null;
         List<Teacher> teachers = teacherRepository.findAll();
-        Map<String, List<Teacher>> ans = new HashMap<>();
+        List<List<Teacher>> ans = new ArrayList<>();
+        HashMap<String, Integer> index = new HashMap<>();
+        int i = 0;
         String department;
         for(Teacher t: teachers){
             department = t.getDepartment();
-            if(ans.containsKey(department)){
-                List<Teacher> temp;
-                System.out.println("here");
-                temp = ans.get(department);
+            if(index.containsKey(department)){
+                List<Teacher> temp = ans.get(index.get(department));
                 temp.add(t);
-                ans.replace(department,temp);
+                ans.set(index.get(department), temp);
             }else{
-                List<Teacher> temp = new ArrayList<>();
+                index.put(department,i);
+                i++;
+                ans.add(new ArrayList<>());
+                List<Teacher> temp = ans.get(index.get(department));
                 temp.add(t);
-                ans.put(department, temp);
+                ans.set(index.get(department), temp);
             }
         }
         return ans;
