@@ -35,10 +35,6 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
-        Class none = new Class("NONE","NO CLASS","10101",6,1000);
-        for(int i =1; i<= 6;i++){
-            this.sections.add(new Section(none,i));
-        }
         this.className = "";
         this.className2 = "";
         this.className2 = "";
@@ -56,10 +52,6 @@ public class Teacher {
         this.currentNumStudent = 0;
         this.className = className;
         this.sections = new ArrayList<>();
-        Class none = new Class("NONE","NO CLASS","10101",6,1000);
-        for(int i =1; i<= 6;i++){
-            this.sections.add(new Section(none,i));
-        }
         this.className2 = "";
         this.className3 = "";
     }
@@ -71,10 +63,6 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
-        Class none = new Class("NONE","NO CLASS","10101",6,1000);
-        for(int i =1; i<= 6;i++){
-            this.sections.add(new Section(none,i));
-        }
         this.className2 = "";
         this.className3 = "";
     }
@@ -87,10 +75,10 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
-        Class none = new Class("NONE","NO CLASS","10101",6,1000);
-        for(int i =1; i<= 6;i++){
-            this.sections.add(new Section(none,i));
-        }
+//        Class none = new Class("NONE","NO CLASS","10101",6,1000);
+//        for(int i =1; i<= 6;i++){
+//            this.sections.add(new Section(none,i));
+//        }
         this.className2 = "";
         this.className3 = "";
     }
@@ -106,10 +94,6 @@ public class Teacher {
         this.prep = prep;
         this.maxNumStudent = 160;
         this.sections = new ArrayList<>();
-        Class none = new Class("NONE","NO CLASS","10101",6,1000);
-        for(int i =1; i<= 6;i++){
-            this.sections.add(new Section(none,i));
-        }
     }
 
     public String getId() {
@@ -140,8 +124,21 @@ public class Teacher {
         return prep;
     }
 
-    public void setPrep(int prep) {
-        this.prep = prep;
+    public void setPrep() {
+        int per[] = {1,2,3,4,5,6};
+        for(int i=0; i < sections.size() ;i++){
+            per[sections.get(i).getPeriodNum()-1] *= -1;
+        }
+
+        for(int i = 0; i < 6; i++){
+            if(per[i] > 0){
+                this.prep = per[i];
+                Class none = new Class("NONE","NO CLASS","10101",6,1000);
+                Section s = new Section(none,1,i);
+                sections.add(s);
+                System.out.println("teacher id " + this.id + " prep: " + this.prep);
+            }
+        }
     }
 
     public String getPreferred_room() {
@@ -221,34 +218,30 @@ public class Teacher {
     }
 
     public void addSection(Section section){
-        System.out.println(section);
-        boolean index = false;
-        if(section.getPeriodNum() == -1)
-            index = true;
-        for(int i=0;i<6;i++){
-            if(sections.get(i).getClassName().equals("NO CLASS") && (sections.get(i).getPeriodNum() == section.getPeriodNum() || index)) {
-                sections.remove(i);
-                i=10;
-            }
-        }
         this.sections.add(section);
+//        System.out.println(section);
+//        boolean index = false;
+//        if(section.getPeriodNum() == -1)
+//            index = true;
+//        for(int i=0;i<6;i++){
+//            if(sections.get(i).getClassName().equals("NO CLASS") && (sections.get(i).getPeriodNum() == section.getPeriodNum() || index)) {
+//                sections.remove(i);
+//                i=10;
+//            }
+//        }
+//        this.sections.add(section);
     }
 
     public void sortSection(){
         this.sections.sort(new SortSection());
     }
 
-    public boolean canAddSection(){
-        boolean ans = false;
-        int secFound =0;
-        for(int i=0;i<6;i++){
-            if(this.sections.get(0).getClassName().equals("NO CLASS")){
-                ans = true;
-            }else{
-                secFound++;
-            }
+    public boolean canAddSection(int secNum){
+        for(int i =0; i < sections.size();i++){
+            if(sections.get(i).getPeriodNum() == secNum)
+                return false;
         }
-        return ans;
+        return true;
     }
 
     public int getMaxNumSections(){

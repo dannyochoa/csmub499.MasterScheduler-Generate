@@ -49,10 +49,22 @@ public class GenerateController {
             Map.Entry<Class, List<Student>> entry = itr.next();
             List<Section> sections;
             sections = createSections(entry.getKey(),entry.getValue().size());
+            sections = setTimeForSections(sections);
             sections = setTeacherToSections(sections);
-            setStudentToSections(sections, entry.getValue());
+            sections = setStudentToSections(sections, entry.getValue());
+            sectionRepository.saveAll(sections);
         }
 
+        List<Teacher> teachers = teacherRepository.findAll();
+        for(Teacher t: teachers){
+            t.setPrep();
+            t.sortSection();
+        }
+        teacherRepository.saveAll(teachers);
+//        List<Section> sec = sectionRepository.findAll();
+//        for(Section s: sec){
+//            System.out.println(s.getClassName() + " " + s.getRoster().size() + " " + s.getTeacherID());
+//        }
     }
 
     public Map<Class,List<Student>> mapStudentToClasses(){
@@ -95,32 +107,48 @@ public class GenerateController {
 
     public List<Section> setTeacherToSections(List<Section> sections){
         String className = sections.get(0).getClassName();
-            List<Teacher> teachers = teacherRepository.findAllByClassName(className);
-            teachers.addAll(teacherRepository.findAllByClassName2(className));
-            teachers.addAll(teacherRepository.findAllByClassName3(className));
-        int teacherIndex = 0;
+        List<Teacher> teachers = teacherRepository.findAllByClassName(className);
+        teachers.addAll(teacherRepository.findAllByClassName2(className));
+        teachers.addAll(teacherRepository.findAllByClassName3(className));
+
         int i =0;
-        while(i < sections.size() && teacherIndex < teachers.size()) {
-            if(sections.get(i).getTeacherID().equals("")){
-                if(teachers.get(teacherIndex).canAddSection() &&
-                    teachers.get(teacherIndex).getCurrentNumStudent() <
-                    teachers.get(teacherIndex).getMaxNumStudent()) {
-                    System.out.println("adding a section");
-                    sections.get(i).setTeacherID(teachers.get(teacherIndex).getId());
-                    teachers.get(teacherIndex).addSection(sections.get(i));
-                    teachers.get(teacherIndex).sortSection();
-                    i++;
-                }else{
-                    int prep = setTimeForSections(teachers.get(teacherIndex).getSections(),
-                            teachers.get(teacherIndex).getId());
-                    teachers.get(teacherIndex).setPrep(prep);
-                    teacherIndex++;
+        while(i < sections.size()) {
+            if (sections.get(i).getTeacherID().equals("")) {
+                for (Teacher t : teachers) {
+                    if (t.getSections().size() < t.getMaxNumSections() && t.getCurrentNumStudent() < t.getMaxNumStudent()
+                            && t.canAddSection(sections.get(i).getPeriodNum())) {
+                        sections.get(i).setTeacherID(t.getId());
+                        t.addSection(sections.get(i));
+                        break;
+                    }
                 }
-            }else{
-                i++;
             }
+            i++;
         }
-        setTimeForSections(sections,null);
+//                if(teachers.get(teacherIndex).getSections().size() <
+//                    teachers.get(teacherIndex).getMaxNumSections() &&
+//                    teachers.get(teacherIndex).getCurrentNumStudent() <
+//                    teachers.get(teacherIndex).getMaxNumStudent()) {
+//                    System.out.println("adding a section");
+//                    sections.get(i).setTeacherID(teachers.get(teacherIndex).getId());
+//                    teachers.get(teacherIndex).addSection(sections.get(i));
+//                    teachers.get(teacherIndex).sortSection();
+//                    i++;
+//                    System.out.println("here");
+//                }
+//                else{
+//                    int prep = setTimeForSections(teachers.get(teacherIndex).getSections(),
+//                            teachers.get(teacherIndex).getId());
+//                    System.out.println("in prep " + prep) ;
+//                    teachers.get(teacherIndex).setPrep(prep);
+//                    teachers.get(teacherIndex).sortSection();
+//                    teacherIndex++;
+//                }
+//            }else{
+//                i++;
+//            }
+//        }
+//        setTimeForSections(sections,null);
         teacherRepository.saveAll(teachers);
         return sections;
     }
@@ -137,23 +165,18 @@ public class GenerateController {
         return minLoc;
     }
 
-    public int setTimeForSections(List<Section> sections, String id){
-        List<Integer> prepPeriod = Arrays.asList(1,2,3,4,5,6);
+    public List<Section> setTimeForSections(List<Section> sections){
         int index;
         for(int i =0; i < sections.size(); i++){
             if(sections.get(i).getPeriodNum() == -1) {
                 index = findMinSection();
                 sections.get(i).setPeriodNum(index);
                 schedule.get(index).add(sections.get(i));
-                if(id != null)
-                    prepPeriod.set(index-1,-1);
+            } else{
+                schedule.get(sections.get(i).getPeriodNum()).add(sections.get(i));
             }
         }
-        for(int i =0; i < 6;i++) {
-            if (prepPeriod.get(i) != -1)
-                return prepPeriod.get(i);
-        }
-        return -1;
+        return sections;
     }
 
     public List<Section> setStudentToSections(List<Section> sections, List<Student> students){
@@ -164,20 +187,23 @@ public class GenerateController {
         for(Student s: students){
             int loc = findAvailableSection(sections, s);
             if(loc == -1){
-//                System.out.println(s);
+                System.out.println("Cannot add student");
             }else {
-                sections.get(loc).addStudent(s);
+                System.out.println("adding student");
                 Section section = sections.get(loc);
+                int numStudents = section.getRoster().size();
                 s.setPeriod(section.getPeriodNum(), section);
+                section.addStudent(s);
                 Optional<Teacher> teacher = teacherRepository.findById(section.getTeacherID());
-                if(teacher.isPresent()) {
+                if (teacher.isPresent()) {
                     teacher.get().updateCurrentNumStudents(1);
                     teacherRepository.save(teacher.get());
                 }
                 studentRepository.save(s);
+                sectionRepository.save(section);
             }
         }
-        sectionRepository.saveAll(sections);
+//        sectionRepository.saveAll(sections);
         return sections;
     }
 
@@ -189,12 +215,13 @@ public class GenerateController {
             if(teacher.isPresent()){
                 Teacher t = teacher.get();
                 if(t.getMaxNumStudent() <= t.getCurrentNumStudent()){
+                    System.out.println("can add is false");
                     canAdd = false;
                 }
             }
             if(student.isPeriodAvailable(sections.get(i).getPeriodNum()) &&
                     sections.get(i).canAddStudent() && canAdd) {
-//                System.out.println("in here");
+                System.out.println("cannot add in here");
                 return i;
             }
         }
