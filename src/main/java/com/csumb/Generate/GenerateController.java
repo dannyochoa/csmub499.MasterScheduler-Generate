@@ -85,7 +85,7 @@ public class GenerateController {
             section_num = c.getMaxNumSections();
         if(section_num == 0)
             section_num = 1;
-        System.out.println("section num " + section_num);
+//        System.out.println("section num " + section_num);
         for(int i = 1; i<= section_num; i++){
             allSections.add(new Section(c,i));
         }
@@ -102,12 +102,13 @@ public class GenerateController {
         int i =0;
         while(i < sections.size() && teacherIndex < teachers.size()) {
             if(sections.get(i).getTeacherID().equals("")){
-                if(teachers.get(teacherIndex).getSections().size() <
-                    teachers.get(teacherIndex).getMaxNumSections() &&
+                if(teachers.get(teacherIndex).canAddSection() &&
                     teachers.get(teacherIndex).getCurrentNumStudent() <
                     teachers.get(teacherIndex).getMaxNumStudent()) {
+                    System.out.println("adding a section");
                     sections.get(i).setTeacherID(teachers.get(teacherIndex).getId());
                     teachers.get(teacherIndex).addSection(sections.get(i));
+                    teachers.get(teacherIndex).sortSection();
                     i++;
                 }else{
                     int prep = setTimeForSections(teachers.get(teacherIndex).getSections(),
@@ -163,7 +164,7 @@ public class GenerateController {
         for(Student s: students){
             int loc = findAvailableSection(sections, s);
             if(loc == -1){
-                System.out.println(s);
+//                System.out.println(s);
             }else {
                 sections.get(loc).addStudent(s);
                 Section section = sections.get(loc);
@@ -193,7 +194,7 @@ public class GenerateController {
             }
             if(student.isPeriodAvailable(sections.get(i).getPeriodNum()) &&
                     sections.get(i).canAddStudent() && canAdd) {
-                System.out.println("in here");
+//                System.out.println("in here");
                 return i;
             }
         }

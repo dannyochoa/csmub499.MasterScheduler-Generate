@@ -35,9 +35,14 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
+        Class none = new Class("NONE","NO CLASS","10101",6,1000);
+        for(int i =1; i<= 6;i++){
+            this.sections.add(new Section(none,i));
+        }
         this.className = "";
         this.className2 = "";
         this.className2 = "";
+
     }
 
     public Teacher(String id, String name, String department, boolean is80Percent,
@@ -51,6 +56,10 @@ public class Teacher {
         this.currentNumStudent = 0;
         this.className = className;
         this.sections = new ArrayList<>();
+        Class none = new Class("NONE","NO CLASS","10101",6,1000);
+        for(int i =1; i<= 6;i++){
+            this.sections.add(new Section(none,i));
+        }
         this.className2 = "";
         this.className3 = "";
     }
@@ -62,6 +71,10 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
+        Class none = new Class("NONE","NO CLASS","10101",6,1000);
+        for(int i =1; i<= 6;i++){
+            this.sections.add(new Section(none,i));
+        }
         this.className2 = "";
         this.className3 = "";
     }
@@ -74,6 +87,10 @@ public class Teacher {
         this.maxNumStudent = 160;
         this.currentNumStudent = 0;
         this.sections = new ArrayList<>();
+        Class none = new Class("NONE","NO CLASS","10101",6,1000);
+        for(int i =1; i<= 6;i++){
+            this.sections.add(new Section(none,i));
+        }
         this.className2 = "";
         this.className3 = "";
     }
@@ -87,6 +104,12 @@ public class Teacher {
         this.className2 = className2;
         this.className3 = className3;
         this.prep = prep;
+        this.maxNumStudent = 160;
+        this.sections = new ArrayList<>();
+        Class none = new Class("NONE","NO CLASS","10101",6,1000);
+        for(int i =1; i<= 6;i++){
+            this.sections.add(new Section(none,i));
+        }
     }
 
     public String getId() {
@@ -198,8 +221,36 @@ public class Teacher {
     }
 
     public void addSection(Section section){
-            this.sections.add(section);
+        System.out.println(section);
+        boolean index = false;
+        if(section.getPeriodNum() == -1)
+            index = true;
+        for(int i=0;i<6;i++){
+            if(sections.get(i).getClassName().equals("NO CLASS") && (sections.get(i).getPeriodNum() == section.getPeriodNum() || index)) {
+                sections.remove(i);
+                i=10;
+            }
+        }
+        this.sections.add(section);
     }
+
+    public void sortSection(){
+        this.sections.sort(new SortSection());
+    }
+
+    public boolean canAddSection(){
+        boolean ans = false;
+        int secFound =0;
+        for(int i=0;i<6;i++){
+            if(this.sections.get(0).getClassName().equals("NO CLASS")){
+                ans = true;
+            }else{
+                secFound++;
+            }
+        }
+        return ans;
+    }
+
     public int getMaxNumSections(){
         if(!is80Percent)
             return 5;
