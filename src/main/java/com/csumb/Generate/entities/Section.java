@@ -115,7 +115,7 @@ public class Section extends Class {
                 ", teacherID='" + teacherID + '\'' +
                 ", maxStudent=" + maxStudent +
                 ", room='" + room + '\'' +
-                '}';
+                '}' + super.toString();
     }
 
     @Override
