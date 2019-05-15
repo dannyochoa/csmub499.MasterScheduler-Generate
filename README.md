@@ -79,16 +79,52 @@ Micro service is deployed on Heroku. https://master-scheduler-generate.herokuapp
 
 ## Networking
 ## List of network requests
-### Students
-- Get Students 
-    - (Read/Get) Gets all of the students in the Database
+- Generate 
+    - (Read/Get) Generates the schedule for the school
     - Required: NA
-    - Response: List of all students present
+    - Response: NA
      ``` java
         @CrossOrigin(origins = "*")
-        @GetMapping("/students")
-        public List<Student> getStudents() {
-            return studentRepo.findAll();
+        @GetMapping("generate")
+        public void generate(){
+          ...
         }
     ```
+- remove generation 
+  - (Read/Get) remove generation 
+  - Required: NA
+  - Response: boolean
+   ``` java
+       @CrossOrigin(origins = "*")
+       @GetMapping("remove")
+       public boolean remove() {
+        isGenerated = false;
+        return false;
+       }
+  ```
+
+- isGenerated 
+  - (Read/Get) Checks whether or not the schedule has been generated
+  - Required: NA
+  - Response: boolean
+   ``` java
+        @CrossOrigin(origins = "*")
+        @GetMapping("isgenerated")
+        public boolean isGenerate(){
+           return isGenerated;
+       }
+  ```
+  
+- Get Schedule 
+  - (Read/Get) Returns the schedule for the teachers. Generation must happen first in order for this to work
+  - Required: NA
+  - Response: List of teachers sorted based on department
+   ``` java
+        @CrossOrigin(origins = "*")
+        @GetMapping("/getschedule")
+        public List<List<Teacher>> getSchedule(){
+           ...
+        }
+  ```
+
 
