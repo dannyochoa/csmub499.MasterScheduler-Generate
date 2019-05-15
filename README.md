@@ -23,10 +23,6 @@ Micro service is deployed on Heroku. https://master-scheduler-generate.herokuapp
   - [X] User can generate a schedule 
   - [X] User can tell if a schedule has been generated
 
-**Optional Nice-to-have Stories**
-  - [ ] User can download Schedule
-  - [ ] User can upload .csv files to add students, teachers, classes, and sections
-
 ## Schema 
 
 ### Models
